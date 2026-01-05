@@ -15,6 +15,8 @@ snake.forEach(part => {
 document.addEventListener('keydown', changeDirection);
 let dx = 20;
 let dy = 0;
+let foodX;
+let foodY;
 
 function changeDirection(event) {
 	const keyPressed = event.keyCode;
@@ -49,6 +51,9 @@ function main() {
 
 	ctx.fillStyle = 'green';
 	ctx.fillRect(snakeX, snakeY, 20, 20);
+
+	ctx.fillStyle = 'red';
+	ctx.fillRect(foodX, foodY, 20, 20);
 	advanceSnake();
 	drawSnake();
 }
@@ -62,8 +67,21 @@ function drawSnake() {
 
 function advanceSnake() {
 	const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-	snake.unshift(head);
-	snake.pop();
+
+	const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
+
+	if (didEatFood) {
+		snake.unshift(head);
+	} else {
+		snake.unshift(head);
+		snake.pop();
+	}
 }
 
+function createFood() {
+	foodX = Math.floor(Math.random() * 20) * 20;
+	foodY = Math.floor(Math.random() * 20) * 20;
+}
+
+createFood();
 setInterval(main, 100);
