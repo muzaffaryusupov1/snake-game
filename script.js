@@ -20,25 +20,30 @@ function changeDirection(event) {
 	const UP_KEY = 38;
 	const DOWN_KEY = 40;
 
-	if (keyPressed === UP_KEY) {
+	if (keyPressed === UP_KEY && dy !== 20) {
 		dx = 0;
 		dy = -20;
 	}
-	if (keyPressed === LEFT_KEY) {
+	if (keyPressed === LEFT_KEY && dx !== 20) {
 		dx = -20;
 		dy = 0;
 	}
-	if (keyPressed === DOWN_KEY) {
+	if (keyPressed === DOWN_KEY && dy !== -20) {
 		dx = 0;
 		dy = 20;
 	}
-	if (keyPressed === RIGHT_KEY) {
+	if (keyPressed === RIGHT_KEY && dx !== -20) {
 		dx = 20;
 		dy = 0;
 	}
 }
 
 function main() {
+	if (didGameEnd() === true) {
+		alert('Game over :( Restart the page to start a new game');
+		return;
+	}
+
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	ctx.fillStyle = 'red';
@@ -74,5 +79,17 @@ function createFood() {
 	foodY = Math.floor(Math.random() * 20) * 20;
 }
 
+function didGameEnd() {
+	const head = snake[0];
+
+	const hitLeftWall = head.x < 0;
+	const hitRightWall = head.x >= canvas.width;
+	const hitTopWall = head.y < 0;
+	const hitBottomWall = head.y >= canvas.height;
+
+	const hitSelf = snake.slice(1).some(part => part.x === head.x && part.y === head.y);
+	return hitLeftWall || hitRightWall || hitTopWall || hitBottomWall || hitSelf;
+}
+
 createFood();
-// setInterval(main, 100);
+setInterval(main, 100);
