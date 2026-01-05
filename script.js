@@ -7,11 +7,6 @@ let snake = [
 	{ x: 160, y: 200 }, // dumi
 ];
 
-ctx.fillStyle = 'green';
-snake.forEach(part => {
-	ctx.fillRect(part.x, part.y, 20, 20);
-});
-
 document.addEventListener('keydown', changeDirection);
 let dx = 20;
 let dy = 0;
@@ -44,16 +39,11 @@ function changeDirection(event) {
 }
 
 function main() {
-	const snakeX = snake[0].x + dx;
-	const snakeY = snake[0].y + dy;
-
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-	ctx.fillStyle = 'green';
-	ctx.fillRect(snakeX, snakeY, 20, 20);
 
 	ctx.fillStyle = 'red';
 	ctx.fillRect(foodX, foodY, 20, 20);
+
 	advanceSnake();
 	drawSnake();
 }
@@ -72,6 +62,7 @@ function advanceSnake() {
 
 	if (didEatFood) {
 		snake.unshift(head);
+		createFood();
 	} else {
 		snake.unshift(head);
 		snake.pop();
@@ -84,4 +75,4 @@ function createFood() {
 }
 
 createFood();
-setInterval(main, 100);
+// setInterval(main, 100);
