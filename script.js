@@ -1,5 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const scoreElement = document.getElementById('score');
 
 let snake = [
 	{ x: 200, y: 200 }, // boshi
@@ -12,6 +13,7 @@ let dx = 20;
 let dy = 0;
 let foodX;
 let foodY;
+let score = 0;
 
 function changeDirection(event) {
 	const keyPressed = event.keyCode;
@@ -66,6 +68,8 @@ function advanceSnake() {
 	const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
 
 	if (didEatFood) {
+		score++;
+		scoreElement.innerHTML = score;
 		snake.unshift(head);
 		createFood();
 	} else {
@@ -92,4 +96,4 @@ function didGameEnd() {
 }
 
 createFood();
-setInterval(main, 100);
+// setInterval(main, 200);
