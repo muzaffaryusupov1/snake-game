@@ -14,6 +14,7 @@ let dy = 0;
 let foodX;
 let foodY;
 let score = 0;
+let gameSpeed = 100;
 
 function changeDirection(event) {
 	const keyPressed = event.keyCode;
@@ -45,14 +46,25 @@ function main() {
 		alert('Game over :( Restart the page to start a new game');
 		return;
 	}
-
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	ctx.fillStyle = 'red';
 	ctx.fillRect(foodX, foodY, 20, 20);
 
+	ctx.beginPath();
+	for (let x = 0; x <= 400; x += 20) {
+		ctx.moveTo(x, 0);
+		ctx.lineTo(x, 400);
+
+		ctx.moveTo(0, x);
+		ctx.lineTo(400, x);
+	}
+	ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; // Juda och oq rang
+	ctx.stroke();
+
 	advanceSnake();
 	drawSnake();
+	setTimeout(main, gameSpeed);
 }
 
 function drawSnake() {
@@ -65,7 +77,7 @@ function drawSnake() {
 function advanceSnake() {
 	const head = { x: snake[0].x + dx, y: snake[0].y + dy };
 
-	const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
+	const didEatFood = head.x === foodX && head.y === foodY;
 
 	if (didEatFood) {
 		score++;
@@ -75,6 +87,10 @@ function advanceSnake() {
 	} else {
 		snake.unshift(head);
 		snake.pop();
+	}
+
+	if (score === 5) {
+		gameSpeed = 50;
 	}
 }
 
@@ -96,4 +112,4 @@ function didGameEnd() {
 }
 
 createFood();
-// setInterval(main, 200);
+main();
